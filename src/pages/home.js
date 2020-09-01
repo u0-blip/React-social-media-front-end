@@ -3,21 +3,22 @@ import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 
 import Profile from '../components/profile/Profile'
-import {Scream, ScreamSkeleton} from '../components/scream/Scream'
-import {getScreams} from '../redux/actions/dataActions'
+import Scream from '../components/scream/Scream'
+import { ScreamSkeleton } from '../components/scream/ScreamSkeleton'
+import { getScreams } from '../redux/actions/dataActions'
 
 export class Home extends Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.getScreams();
     }
 
     render() {
-        const {screams, loading} = this.props.data;
-        let recentScreamsMarkup = !loading?(
-            screams.map((scream)=><Scream key={scream.screamId} scream={scream}/>)
-        ):(
-            <ScreamSkeleton />
-        )
+        const { screams, loading } = this.props.data;
+        let recentScreamsMarkup = !loading ? (
+            screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
+        ) : (
+                <ScreamSkeleton />
+            )
         return (
             <Grid container spacing={5}>
                 <Grid item sm={8} xs={12}>
@@ -32,13 +33,13 @@ export class Home extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-      data: state.data
+        data: state.data
     }
-  }
-  
+}
+
 const mapDispatchToProps = { getScreams }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Home)
+)(Home)
