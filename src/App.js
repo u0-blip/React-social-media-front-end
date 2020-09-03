@@ -20,7 +20,7 @@ import Signup from "./pages/signup";
 import User from "./pages/user";
 
 axios.defaults.baseURL =
-  "http://localhost:5000/social-media-app-287512/asia-northeast1/api";
+  "https://asia-northeast1-social-media-app-287512.cloudfunctions.net/api";
 
 function App() {
   return (

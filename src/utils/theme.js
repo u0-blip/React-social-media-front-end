@@ -40,7 +40,7 @@ const themeObject = {
         },
         button: {
             margin: '10px auto 10px auto'
-        }
+        },
     }
 };
 

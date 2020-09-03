@@ -51,10 +51,27 @@ export const getUserData = () => (dispatch) => {
     axios
         .get('/user')
         .then((res) => {
-            dispatch({
-                type: SET_USER,
-                payload: res.data
-            });
+            dispatch(setUser(res.data))
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const FBIdToken = localStorage.getItem("FBIdToekn");
+            if (FBIdToken && err.response.data.code == 'auth/id-token-expired') {
+                alert('Your login token has expired, please login again!');
+            } else {
+                console.log(err);
+            }
+        });
+}
+
+const setUser = (data) => (dispatch) => {
+    dispatch({
+        type: SET_USER,
+        payload: data
+    });
+}
+
+export const uploadImage = (imageForm) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+        .post(imageForm, { headers: imageForm.getHeaders() })
 }

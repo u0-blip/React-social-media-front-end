@@ -18,3 +18,8 @@ body {
 a {
   text-decoration: none;
 }
+
+.profile {
+  margin: auto;
+  padding-right: 20px;
+}

@@ -41,5 +41,6 @@
   },
   "devDependencies": {
     "redux-devtools-extension": "^2.13.8"
-  }
+  },
+  "proxy": "https://asia-northeast1-social-media-app-287512.cloudfunctions.net/api"
 }
