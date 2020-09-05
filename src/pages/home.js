@@ -8,11 +8,12 @@ import { ScreamSkeleton } from '../components/scream/ScreamSkeleton'
 import { getScreams } from '../redux/actions/dataActions';
 import { getUserData } from '../redux/actions/userActions';
 import axios from 'axios';
+import Postbox from '../components/scream/postBox';
 
 export class Home extends Component {
     componentDidMount() {
         if (!this.props.user.autherticated) {
-            const FBIdToken = localStorage.getItem("FBIdToekn");
+            const FBIdToken = localStorage.getItem("FBIdToken");
             axios.defaults.headers.common['Authorization'] = FBIdToken;
             this.props.getUserData();
         }
@@ -25,9 +26,11 @@ export class Home extends Component {
         ) : (
                 <ScreamSkeleton />
             )
+
         return (
             <Grid container spacing={0}>
                 <Grid item sm={8} xs={12}>
+                    <Postbox history={this.props.history} />
                     {recentScreamsMarkup}
                 </Grid>
                 <Grid item sm={4} xs={12} className='profile' >

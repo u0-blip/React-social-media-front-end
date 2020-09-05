@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Typography, Tooltip, IconButton } from '@material-ui/core';
+import { Typography, Tooltip, IconButton, Avatar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,32 +8,46 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import anon_img from '../../statics/anon.png';
 
+import EditProfile from './EditProfile';
+import EditProfileButton from './EditProfileButton';
 
+import LocationOn from '@material-ui/icons/LocationOn';
+import WebIcon from '@material-ui/icons/Language';
+import PersonIcon from '@material-ui/icons/Person';
 import { uploadImage } from '../../redux/actions/userActions';
 
-const styles = (theme) => ({
-    ...theme.spreadThis
-});
+import { Link } from 'react-router-dom';
 
-const EditProfileButton = ({ children, onClick, tip, btnClassName, tipClassName }) =>
-    <Tooltip title={tip} className={tipClassName} placement='top'>
-        <IconButton onClick={onClick} className={btnClassName}>
-            {children}
-        </IconButton>
-    </Tooltip>
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
+const styles = (theme) => ({
+    ...theme.spreadThis,
+    profile_icon: {
+        margin: '0px 9px -6px 0px'
+    },
+    buttons: {
+        margin: '30px auto 25px  auto'
+    },
+    name_text: {
+        textAlign: 'center'
+    }
+});
 
 
 
 export class Profile extends Component {
     constructor() {
         super();
-        this.fileRef = React.createRef();
+        this.imageInput = React.createRef();
         this.fileInput = <input
             type='file'
             hidden='hidden'
-            ref="imageInput"
+            ref={this.imageInput}
             onChange={this.handleImageChange}
         />;
+        this.handleEditPicture = this.handleEditPicture.bind(this);
+
     }
 
     handleImageChange = (event) => {
@@ -42,46 +56,57 @@ export class Profile extends Component {
         formData.append('photo', image, image.name);
         this.props.uploadImage(formData);
     }
-    handleEditPicture() {
-        this.refs.fileUploader.click();
 
+    handleEditPicture() {
+        this.imageInput.current.click();
     }
+
     render() {
         const {
             classes,
+            user: {
+                credentials: { handle, createAt, imageUrl, bio, website, location },
+                loading,
+                authenticated
+            }
         } = this.props;
-
-        const user = this.props.user;
 
         let profile;
 
-        if (user.authenticated) {
+        if (authenticated) {
             profile =
                 <Fragment>
                     <div className={classes.logo_image} >
                         <div className={classes.polaroid}>
-                            <img src={user.credentials.imageUrl} className={classes.logo_image} />
+                            <Avatar src={imageUrl} className={classes.logo_image} />
                             {this.fileInput}
                             <EditProfileButton
                                 tip='Edit profile picture'
                                 onClick={this.handleEditPicture}
                                 btnClassName='button'
-                                htmlFor='imageInput'
-                                ref={this.fileRef}
+                                style={{
+                                    position: 'relative',
+                                    marginTop: '-74%',
+                                    left: '71%'
+                                }}
                             >
                                 <EditIcon color='primary' />
                             </EditProfileButton>
                         </div>
                     </div>
-                    <Typography>
-                        Name: {user.credentials.handle}
+                    <Typography variant='body1' className={classes.name_text}>
+                        {handle}
                     </Typography>
-                    {user.location && <Typography>
-                        Location: {user.credentials.location}
+                    {location && <Typography variant='body1' className={classes.profile_text}>
+                        <LocationOn className={classes.profile_icon} /> {location}
                     </Typography>}
-                    {user.introduction && <Typography>
-                        Introduction: {user.credentials.bio}
+                    {website && <Typography variant='body1' className={classes.profile_text}>
+                        <WebIcon className={classes.profile_icon} /> <a href={website}> {website} </a>
                     </Typography>}
+                    {bio && <Typography variant='body1' className={classes.profile_text}>
+                        <PersonIcon className={classes.profile_icon} /> {bio}
+                    </Typography>}
+                    <EditProfile />
                 </Fragment>
         } else {
             profile =
@@ -91,9 +116,33 @@ export class Profile extends Component {
                             <img src={anon_img} className={classes.logo_image} />
                         </div>
                     </div>
-                    <Typography>
-                        Name: Anonymous
-                </Typography>
+
+                    <Typography variant="body2" align="center">
+                        No profile found, please login again
+                    </Typography>
+                    <Grid item xs={12} className={classes.buttons}>
+                        <Grid container justify="center" spacing={3}>
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    component={Link}
+                                    to="/login"
+                                >
+                                    Login
+                        </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    component={Link}
+                                    to="/signup"
+                                >
+                                    Signup
+                        </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
                 </Fragment>
         }
         return (

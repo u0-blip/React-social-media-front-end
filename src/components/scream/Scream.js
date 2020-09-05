@@ -29,6 +29,10 @@ import MessageIcon from '@material-ui/icons/Message';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Select, MenuItem, Menu } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { deleteScream } from '../../redux/actions/dataActions';
 
 // export class ScreamDialog extends Component {
 //     render() {
@@ -76,11 +80,57 @@ const Scream = function (props) {
         scream: {
             body, createAt, userImage, handle, screamId, likeCount, commentCount
         },
-        // user:{
-        //     authenticated,
-        //     credentials: {handle}
-        // }
+        user,
+        user: {
+            authenticated
+        }
     } = props;
+
+    const ITEM_HEIGHT = 48;
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleDelete = () => {
+        props.deleteScream(screamId);
+    }
+
+    const action = authenticated ?
+        (
+            <Fragment>
+                <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                        style: {
+                            maxHeight: ITEM_HEIGHT * 4.5,
+                        },
+                    }}
+                >
+                    <MenuItem onClick={handleClose}>
+                        {user.credentials.handle == handle && <DeleteIcon aria-label="delete" onClick={handleDelete} />}
+                        {user.credentials.handle != handle && <DeleteForeverIcon aria-label="delete" />}
+                    </MenuItem>
+                </Menu>
+            </Fragment>
+        ) : (<div></div>)
 
     return (
         <Card className={classes.root}>
@@ -88,11 +138,7 @@ const Scream = function (props) {
                 avatar={
                     <Avatar alt={handle[0]} src={userImage} />
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
+                action={action}
                 title={handle}
                 subheader={dayjs(createAt).fromNow()}
             />
@@ -123,8 +169,11 @@ Scream.propTypes = {
     openDialog: PropTypes.bool
 };
 
+const mapActiontoProps = {
+    deleteScream
+}
 const mapStateToProps = (state) => ({
-    // user: state.user
+    user: state.user
 });
 
-export default connect(mapStateToProps)(Scream);
+export default connect(mapStateToProps, mapActiontoProps)(Scream);

@@ -1,9 +1,10 @@
 import { SET_ERRORS, LOADING_UI, CLEAR_ERRORS } from '../types';
-
+import { createBrowserHistory } from 'history';
 
 const initialState = {
     loading: false,
     errors: null,
+    history: createBrowserHistory()
 };
 
 export default function (state = initialState, action) {

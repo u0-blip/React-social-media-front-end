@@ -39,10 +39,15 @@ export const loginUser = (userData, history) => (dispatch) => {
         });
 };
 
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('FBIdToken');
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({ type: SET_UNAUTHENTICATED });
+}
 
 export const setAuthenticatedUser = (token) => {
     const FBIdToken = `Bearer ${token}`;
-    localStorage.setItem('FBIdToekn', FBIdToken);
+    localStorage.setItem('FBIdToken', FBIdToken);
     axios.defaults.headers.common['Authorization'] = FBIdToken;
 }
 
@@ -54,12 +59,7 @@ export const getUserData = () => (dispatch) => {
             dispatch(setUser(res.data))
         })
         .catch((err) => {
-            const FBIdToken = localStorage.getItem("FBIdToekn");
-            if (FBIdToken && err.response.data.code == 'auth/id-token-expired') {
-                alert('Your login token has expired, please login again!');
-            } else {
-                console.log(err);
-            }
+            console.log(err);
         });
 }
 
@@ -73,5 +73,25 @@ const setUser = (data) => (dispatch) => {
 export const uploadImage = (imageForm) => (dispatch) => {
     dispatch({ type: LOADING_USER });
     axios
-        .post(imageForm, { headers: imageForm.getHeaders() })
+        .post('/user/photo', imageForm)
+        .then(() => {
+            dispatch(getUserData());
+        })
+        .catch((err) => console.log(err))
+}
+
+export const updateInfo = (userData) => (dispatch) => {
+    dispatch({ type: LOADING_UI });
+    axios
+        .post('/user', userData)
+        .then((res) => {
+            dispatch(getUserData());
+            dispatch({ type: CLEAR_ERRORS });
+        })
+        .catch((err) => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        });
 }

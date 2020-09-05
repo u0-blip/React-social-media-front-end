@@ -41,6 +41,10 @@ const themeObject = {
         button: {
             margin: '10px auto 10px auto'
         },
+        profile_text: {
+            margin: '10px 10px 10px 10px'
+        }
+
     }
 };
 

@@ -36,6 +36,13 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true
             }
+
+        case SET_UNAUTHENTICATED:
+            return {
+                ...state,
+                authenticated: false,
+                user: {}
+            }
         default:
             return state;
     }
