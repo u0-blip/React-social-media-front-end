@@ -1,7 +1,6 @@
 import {
     SET_SCREAMS,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
+    TGGL_LIKE_SCREAM_data,
     LOADING_DATA,
     DELETE_SCREAM,
     POST_SCREAM,
@@ -15,6 +14,15 @@ const initialState = {
     scream: [],
     loading: false
 };
+
+function find(screamId, screams) {
+    for (var s in screams) {
+        if (screamId == screams[s].screamId) {
+            return s;
+        }
+    }
+    return -1;
+}
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -43,6 +51,19 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false
+            }
+        case TGGL_LIKE_SCREAM_data:
+            console.log('jackpot1')
+            const index = find(action.payload.screamId, state.screams);
+            if (index != -1) {
+                if (action.payload.liked) {
+                    state.screams[index].likeCount -= 1;
+                } else {
+                    state.screams[index].likeCount += 1;
+                }
+            }
+            return {
+                ...state
             }
         default:
             return state

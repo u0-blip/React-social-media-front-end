@@ -21,8 +21,24 @@ export class Home extends Component {
     }
     render() {
         const { screams, loading } = this.props.data;
+        let liked_id = []
+        let liked_arr = []
+        for (var i in this.props.likes) {
+            liked_id.push(this.props.likes[i].screamId)
+        }
+
+        for (var i in screams) {
+            if (liked_id.includes(screams[i].screamId)) {
+                liked_arr.push(true);
+            } else {
+                liked_arr.push(false);
+            }
+        }
+        console.log('home update', this.props.likes);
+        console.log('liked ', liked_arr)
+
         let recentScreamsMarkup = !loading ? (
-            screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
+            screams.map((scream, i) => <Scream key={scream.screamId} scream={scream} liked={liked_arr[i]} />)
         ) : (
                 <ScreamSkeleton />
             )
@@ -43,6 +59,7 @@ export class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        likes: state.user.likes,
         data: state.data,
         user: state.user
     }

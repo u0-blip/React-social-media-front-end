@@ -3,8 +3,7 @@ import {
     SET_AUTHENTICATED,
     SET_UNAUTHENTICATED,
     LOADING_USER,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
+    TGGL_LIKE_SCREAM_data,
     MARK_NOTIFICATIONS_READ
 } from '../types';
 
@@ -42,6 +41,26 @@ export default function (state = initialState, action) {
                 ...state,
                 authenticated: false,
                 user: {}
+            }
+        case TGGL_LIKE_SCREAM_data:
+            console.log('jackpot2')
+            if (action.payload.liked) {
+                for (var i in state.likes) {
+                    if (state.likes[i].screamId === action.payload.screamId) {
+                        console.log('splice')
+                        state.likes.splice(i, 1)
+                        break
+                    }
+                }
+            } else {
+                console.log('pushed')
+                state.likes.push({
+                    handle: action.payload.handle,
+                    screamId: action.payload.screamId
+                })
+            }
+            return {
+                ...state
             }
         default:
             return state;

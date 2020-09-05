@@ -152,7 +152,6 @@ export class PostBox extends Component {
 
 PostBox.propTypes = {
     user: PropTypes.object.isRequired,
-    scream: PropTypes.object.isRequired,
     openDialog: PropTypes.bool
 };
 

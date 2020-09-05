@@ -27,12 +27,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MessageIcon from '@material-ui/icons/Message';
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Select, MenuItem, Menu } from '@material-ui/core';
+import { MenuItem, Menu } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { deleteScream } from '../../redux/actions/dataActions';
+import { deleteScream, handleLike, handleComment, handleShare } from '../../redux/actions/dataActions';
 
 // export class ScreamDialog extends Component {
 //     render() {
@@ -82,7 +81,8 @@ const Scream = function (props) {
         },
         user,
         user: {
-            authenticated
+            authenticated,
+            likes
         }
     } = props;
 
@@ -100,6 +100,7 @@ const Scream = function (props) {
     const handleDelete = () => {
         props.deleteScream(screamId);
     }
+
 
     const action = authenticated ?
         (
@@ -132,6 +133,7 @@ const Scream = function (props) {
             </Fragment>
         ) : (<div></div>)
 
+    console.log('scream update')
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -148,13 +150,15 @@ const Scream = function (props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="like">
-                    <FavoriteIcon /> {likeCount}
+                <IconButton aria-label="like" onClick={() => props.handleLike(props.liked, screamId, props.user.handle)}>
+                    <FavoriteIcon
+                        style={props.liked ? { color: red[500] } : {}}
+                    /> {likeCount}
                 </IconButton>
-                <IconButton aria-label="comment">
+                <IconButton aria-label="comment" onClick={() => props.handleComment()}>
                     <MessageIcon /> {commentCount}
                 </IconButton>
-                <IconButton aria-label="share">
+                <IconButton aria-label="share" onClick={() => props.handleShare()}>
                     <ShareIcon /> 0
                 </IconButton>
             </CardActions>
@@ -170,7 +174,10 @@ Scream.propTypes = {
 };
 
 const mapActiontoProps = {
-    deleteScream
+    deleteScream,
+    handleLike,
+    handleComment,
+    handleShare
 }
 const mapStateToProps = (state) => ({
     user: state.user

@@ -20,8 +20,8 @@ import Signup from "./pages/signup";
 import User from "./pages/user";
 
 axios.defaults.baseURL =
-  // "https://asia-northeast1-social-media-app-287512.cloudfunctions.net/api";
-  'http://localhost:5000/social-media-app-287512/us-central1/api/'
+  "https://asia-northeast1-social-media-app-287512.cloudfunctions.net/api";
+// 'http://localhost:5000/social-media-app-287512/us-central1/api/'
 
 function App() {
   return (
