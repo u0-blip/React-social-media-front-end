@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { spacing } from '@material-ui/system';
 
 const themeObject = {
     palette: {
@@ -43,10 +44,16 @@ const themeObject = {
         },
         profile_text: {
             margin: '10px 10px 10px 10px'
-        }
+        },
 
     }
 };
 
+let theme = createMuiTheme(themeObject);
 
-export default createMuiTheme(themeObject);
+theme.spreadThis.commentThumb = {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+}
+
+export default theme;

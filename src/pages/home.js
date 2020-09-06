@@ -34,11 +34,10 @@ export class Home extends Component {
                 liked_arr.push(false);
             }
         }
-        console.log('home update', this.props.likes);
-        console.log('liked ', liked_arr)
 
         let recentScreamsMarkup = !loading ? (
-            screams.map((scream, i) => <Scream key={scream.screamId} scream={scream} liked={liked_arr[i]} />)
+            screams.map((scream, i) =>
+                <Scream key={scream.screamId} screamId={scream.screamId} scream={scream} liked={liked_arr[i]} />)
         ) : (
                 <ScreamSkeleton />
             )
@@ -60,6 +59,7 @@ export class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         likes: state.user.likes,
+        screams: state.data.screams,
         data: state.data,
         user: state.user
     }

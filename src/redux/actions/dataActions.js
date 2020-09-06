@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOADING_DATA, SET_SCREAMS, LOADING_UI, SET_ERRORS, CLEAR_ERRORS, UNSET_SCREAM, TGGL_LIKE_SCREAM_data, TGGL_LIKE_SCREAM_user, SUBMIT_COMMENT } from '../types'
+import { LOADING_DATA, SET_SCREAMS, LOADING_UI, SET_ERRORS, CLEAR_ERRORS, UNSET_SCREAM, TGGL_LIKE_SCREAM, SET_SCREAM, SUBMIT_COMMENT } from '../types'
 
 export const getScreams = () => (dispatch) => {
     dispatch({ type: LOADING_DATA });
@@ -14,6 +14,23 @@ export const getScreams = () => (dispatch) => {
         .catch((err) => {
             dispatch({
                 type: SET_SCREAMS,
+                payload: []
+            });
+        });
+};
+
+export const getScream = (screamId) => (dispatch) => {
+    axios
+        .get(`/scream/${screamId}`)
+        .then((res) => {
+            dispatch({
+                type: SET_SCREAM,
+                payload: res.data
+            });
+        })
+        .catch((err) => {
+            dispatch({
+                type: SET_SCREAM,
                 payload: []
             });
         });
@@ -65,7 +82,7 @@ export const handleLike = (liked, screamId, handle) => (dispatch) => {
         .get(`/scream/${screamId}/${action}`)
         .then(() => {
             dispatch({
-                type: TGGL_LIKE_SCREAM_data,
+                type: TGGL_LIKE_SCREAM,
                 payload: {
                     liked, screamId, handle
                 }
@@ -76,12 +93,29 @@ export const handleLike = (liked, screamId, handle) => (dispatch) => {
         })
 }
 
-export const handleComment = (screamId, comment) => (dispatch) => {
+export const postComment = (comment, screamId, credentials) => (dispatch) => {
+    const handle = credentials.handle;
+    const imageUrl = credentials.imageUrl;
+
+    if (comment.comment.trim().length === 0) {
+        dispatch({
+            type: SET_ERRORS,
+            payload: { post: 'Cannot make blank post.' }
+        });
+        return
+    }
+
     axios
-        .post(`/scream/${screamId}/${comment}`)
+        .post(`/scream/${screamId}/comment`, comment)
         .then(() => {
             dispatch({
-                type: SUBMIT_COMMENT
+                type: SUBMIT_COMMENT,
+                payload: {
+                    body: comment.comment,
+                    screamId,
+                    handle,
+                    imageUrl
+                }
             });
         })
         .catch((err) => {

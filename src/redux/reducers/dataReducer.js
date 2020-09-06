@@ -1,6 +1,6 @@
 import {
     SET_SCREAMS,
-    TGGL_LIKE_SCREAM_data,
+    TGGL_LIKE_SCREAM,
     LOADING_DATA,
     DELETE_SCREAM,
     POST_SCREAM,
@@ -12,9 +12,11 @@ import {
 const initialState = {
     screams: [],
     scream: [],
-    loading: false
+    loading: false,
+    comments: {},
+    likes: {}
 };
-
+let index;
 function find(screamId, screams) {
     for (var s in screams) {
         if (screamId == screams[s].screamId) {
@@ -22,6 +24,14 @@ function find(screamId, screams) {
         }
     }
     return -1;
+}
+
+function add_data(dict, dataId, data) {
+    if (!(dataId in dict)) {
+        dict[dataId] = data;
+    } else {
+        dict[dataId].push(data)
+    }
 }
 
 export default function (state = initialState, action) {
@@ -38,10 +48,19 @@ export default function (state = initialState, action) {
                 loading: false
             };
         case SET_SCREAM:
+            //data markup
+            //payload: ...screamdata
+            //         comments
+            //         likes
+
+            state.comments[action.payload.screamId] = action.payload.comments;
+            state.likes[action.payload.screamId] = action.payload.likes;
+
             return {
                 ...state,
-                scream: action.payload
+                loading: false
             };
+
         case UNSET_SCREAM:
             for (var i in state.screams) {
                 if (state.screams[i].screamId == action.payload) {
@@ -52,9 +71,21 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false
             }
-        case TGGL_LIKE_SCREAM_data:
-            console.log('jackpot1')
-            const index = find(action.payload.screamId, state.screams);
+        case SUBMIT_COMMENT:
+            const screamId = action.payload.screamId;
+
+            index = find(screamId, state.screams);
+            add_data(state.comments, screamId, action.payload)
+            if (index != -1) {
+                state.screams[index].commentCount += 1;
+            }
+
+            return {
+                ...state
+            }
+
+        case TGGL_LIKE_SCREAM:
+            index = find(action.payload.screamId, state.screams);
             if (index != -1) {
                 if (action.payload.liked) {
                     state.screams[index].likeCount -= 1;

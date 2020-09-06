@@ -26,12 +26,15 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MessageIcon from '@material-ui/icons/Message';
-
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MenuItem, Menu } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { deleteScream, handleLike, handleComment, handleShare } from '../../redux/actions/dataActions';
+import { deleteScream, handleLike, handleShare } from '../../redux/actions/dataActions';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CommentSection from './CommentSection';
+import { getScream } from '../../redux/actions/dataActions';
 
 // export class ScreamDialog extends Component {
 //     render() {
@@ -58,22 +61,32 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '56.25%', // 16:9
     },
     expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
+        color: 'grey',
+        transform: 'scaleX(-1)',
         transition: theme.transitions.create('transform', {
             duration: theme.transitions.duration.shortest,
         }),
     },
     expandOpen: {
-        transform: 'rotate(180deg)',
+        transform: 'scaleX(1)',
+        color: '#383434',
     },
-
+    scream: {
+        margin: `${theme.spacing(1)}px auto`,
+    }
 }));
+
 
 const Scream = function (props) {
     const classes = useStyles();
     dayjs.extend(relativeTime)
 
+    const [expanded, setExpanded] = React.useState(false);
+    const handleExpandClick = () => {
+        // get the data from the server
+        props.getScream(props.screamId);
+        setExpanded(!expanded);
+    };
 
     const {
         scream: {
@@ -85,6 +98,8 @@ const Scream = function (props) {
             likes
         }
     } = props;
+
+    console.log('likecount', likeCount, 'comment count', commentCount);
 
     const ITEM_HEIGHT = 48;
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -125,17 +140,30 @@ const Scream = function (props) {
                         },
                     }}
                 >
-                    <MenuItem onClick={handleClose}>
-                        {user.credentials.handle == handle && <DeleteIcon aria-label="delete" onClick={handleDelete} />}
-                        {user.credentials.handle != handle && <DeleteForeverIcon aria-label="delete" />}
-                    </MenuItem>
+                    {user.credentials.handle == handle &&
+                        [
+                            <MenuItem onClick={handleClose} key='delete'>
+                                <Typography >Delete</Typography>
+                                <DeleteIcon style={{ marginLeft: 'auto' }} aria-label="delete" onClick={handleDelete} />
+                            </MenuItem>,
+                            <MenuItem onClick={handleClose} key='Hide'>
+                                <Typography >Hide</Typography>
+                                <VisibilityOffIcon style={{ marginLeft: 'auto' }} aria-label="Hide" />
+                            </MenuItem>
+                        ]
+                    }
+                    {user.credentials.handle != handle &&
+                        [<MenuItem onClick={handleClose} key='Hide'>
+                            <Typography>Hide</Typography>
+                            <VisibilityOffIcon aria-label="Hide" />
+                        </MenuItem>]
+                    }
                 </Menu>
             </Fragment>
         ) : (<div></div>)
 
-    console.log('scream update')
     return (
-        <Card className={classes.root}>
+        <Card className={clsx(classes.root, classes.scream)}>
             <CardHeader
                 avatar={
                     <Avatar alt={handle[0]} src={userImage} />
@@ -155,13 +183,19 @@ const Scream = function (props) {
                         style={props.liked ? { color: red[500] } : {}}
                     /> {likeCount}
                 </IconButton>
-                <IconButton aria-label="comment" onClick={() => props.handleComment()}>
-                    <MessageIcon /> {commentCount}
+                <IconButton
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="comment">
+                    <MessageIcon className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                    })} /> {commentCount}
                 </IconButton>
                 <IconButton aria-label="share" onClick={() => props.handleShare()}>
                     <ShareIcon /> 0
                 </IconButton>
             </CardActions>
+            <CommentSection expanded={expanded} screamId={props.screamId} />
         </Card>
     );
 }
@@ -176,11 +210,13 @@ Scream.propTypes = {
 const mapActiontoProps = {
     deleteScream,
     handleLike,
-    handleComment,
-    handleShare
+    handleShare,
+    getScream
 }
+
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    data: state.data,
 });
 
 export default connect(mapStateToProps, mapActiontoProps)(Scream);
