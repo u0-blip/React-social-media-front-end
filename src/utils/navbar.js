@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 
 import { connect } from 'react-redux';
 import Notifications from './Notifications';
+import SearchBar from './searchBar';
 
 export class Navbar extends Component {
   render() {
@@ -23,6 +24,7 @@ export class Navbar extends Component {
           <Button color="inherit" component={Link} to="/signup">
             Signup
             </Button>
+          <SearchBar />
           {this.props.authenticated && <Notifications />}
         </Toolbar>
       </AppBar>

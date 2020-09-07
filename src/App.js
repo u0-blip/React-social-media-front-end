@@ -12,12 +12,13 @@ import store from "./redux/store";
 
 import axios from "axios";
 
-import Navbar from "./navbar";
+import Navbar from "./utils/navbar";
 
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import User from "./pages/user";
+import SearchRes from './utils/searchRes';
 
 axios.defaults.baseURL =
   // "https://us-central1-social-media-app-287512.cloudfunctions.net/api";
@@ -40,6 +41,7 @@ function App() {
                 path="/users/:handle/scream/:screamId"
                 component={User}
               />
+              <Route path="/search/:query" component={SearchRes} />
             </Switch>
           </div>
         </Router>

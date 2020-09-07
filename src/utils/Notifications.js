@@ -4,15 +4,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 // import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MenuItem, Menu, IconButton, Badge, Grid } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import dayjs from 'dayjs';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/Chat';
 import { Link } from 'react-router-dom';
-import { markNotificationsSeen, markNotificationsOpen } from './redux/actions/userActions';
+import { markNotificationsSeen, markNotificationsOpen } from '../redux/actions/userActions';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 
