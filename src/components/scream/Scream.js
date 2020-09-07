@@ -7,7 +7,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 
 // MUI stuff
-import withStyles from '@material-ui/core/styles/withStyles';
 
 // MUI components
 
@@ -99,7 +98,6 @@ const Scream = function (props) {
         }
     } = props;
 
-    console.log('likecount', likeCount, 'comment count', commentCount);
 
     const ITEM_HEIGHT = 48;
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -112,6 +110,7 @@ const Scream = function (props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     const handleDelete = () => {
         props.deleteScream(screamId);
     }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER, LOADING_USER, MARK_NOTIFICATIONS_READ, SET_ERRORS, LOADING_UI, CLEAR_ERRORS } from '../types'
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER, LOADING_USER, MARK_NOTIFICATIONS_SEEN, SET_ERRORS, LOADING_UI, CLEAR_ERRORS, MARK_NOTIFICATIONS_OPEN } from '../types'
 
 
 
@@ -11,6 +11,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
             setAuthenticatedUser(res.data.token);
             dispatch(getUserData());
             dispatch({ type: CLEAR_ERRORS });
+            dispatch({ type: SET_AUTHENTICATED });
             history.push('/');
         })
         .catch((err) => {
@@ -29,6 +30,7 @@ export const loginUser = (userData, history) => (dispatch) => {
             setAuthenticatedUser(res.data.token);
             dispatch(getUserData());
             dispatch({ type: CLEAR_ERRORS });
+            dispatch({ type: SET_AUTHENTICATED });
             history.push('/');
         })
         .catch((err) => {
@@ -95,3 +97,23 @@ export const updateInfo = (userData) => (dispatch) => {
             });
         });
 }
+
+export const markNotificationsSeen = (notificationIds) => (dispatch) => {
+    dispatch({
+        type: MARK_NOTIFICATIONS_SEEN
+    });
+    axios
+        .post('/notifications/seen', notificationIds)
+        .catch((err) => console.log(err));
+}
+
+export const markNotificationsOpen = (notificationIds) => (dispatch) => {
+    dispatch({
+        type: MARK_NOTIFICATIONS_OPEN,
+        payload: notificationIds[0]
+    });
+    axios
+        .post('/notifications/open', notificationIds)
+        .catch((err) => console.log(err));
+}
+

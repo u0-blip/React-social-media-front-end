@@ -1,5 +1,20 @@
 import axios from 'axios';
-import { LOADING_DATA, SET_SCREAMS, LOADING_UI, SET_ERRORS, CLEAR_ERRORS, UNSET_SCREAM, TGGL_LIKE_SCREAM, SET_SCREAM, SUBMIT_COMMENT } from '../types'
+import { LOADING_DATA, SET_SCREAMS, LOADING_UI, SET_ERRORS, CLEAR_ERRORS, UNSET_SCREAM, TGGL_LIKE_SCREAM, SET_SCREAM, SUBMIT_COMMENT, SET_UNAUTHENTICATED } from '../types'
+
+const logout = () => (dispatch) => {
+    localStorage.removeItem('FBIdToken');
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({ type: SET_UNAUTHENTICATED });
+};
+
+
+export const error_handle = (err) => (dispatch) => {
+    if (err.code && err.code == 'auth/id-token-expired') {
+        dispatch(logout)
+    } else {
+        console.log(err);
+    }
+};
 
 export const getScreams = () => (dispatch) => {
     dispatch({ type: LOADING_DATA });
@@ -12,6 +27,7 @@ export const getScreams = () => (dispatch) => {
             });
         })
         .catch((err) => {
+            error_handle(err);
             dispatch({
                 type: SET_SCREAMS,
                 payload: []
@@ -29,6 +45,7 @@ export const getScream = (screamId) => (dispatch) => {
             });
         })
         .catch((err) => {
+            error_handle(err);
             dispatch({
                 type: SET_SCREAM,
                 payload: []
@@ -52,22 +69,20 @@ export const postScream = (post) => (dispatch) => {
             dispatch(getScreams())
         })
         .catch((err) => {
-            console.log(err);
+            error_handle(err);
         })
 
 }
 
 export const deleteScream = (postId) => (dispatch) => {
+    dispatch({
+        type: UNSET_SCREAM,
+        payload: postId
+    })
     axios
         .delete(`/scream/${postId}`)
-        .then(() => {
-            dispatch({
-                type: UNSET_SCREAM,
-                payload: postId
-            })
-        })
         .catch((err) => {
-            console.log(err);
+            error_handle(err);
         })
 }
 
@@ -78,18 +93,16 @@ export const handleLike = (liked, screamId, handle) => (dispatch) => {
     } else {
         action = 'unlike';
     }
+    dispatch({
+        type: TGGL_LIKE_SCREAM,
+        payload: {
+            liked, screamId, handle
+        }
+    });
     axios
         .get(`/scream/${screamId}/${action}`)
-        .then(() => {
-            dispatch({
-                type: TGGL_LIKE_SCREAM,
-                payload: {
-                    liked, screamId, handle
-                }
-            });
-        })
         .catch((err) => {
-            console.log(err)
+            error_handle(err);
         })
 }
 
@@ -104,22 +117,20 @@ export const postComment = (comment, screamId, credentials) => (dispatch) => {
         });
         return
     }
+    dispatch({
+        type: SUBMIT_COMMENT,
+        payload: {
+            body: comment.comment,
+            screamId,
+            handle,
+            imageUrl
+        }
+    });
 
     axios
         .post(`/scream/${screamId}/comment`, comment)
-        .then(() => {
-            dispatch({
-                type: SUBMIT_COMMENT,
-                payload: {
-                    body: comment.comment,
-                    screamId,
-                    handle,
-                    imageUrl
-                }
-            });
-        })
         .catch((err) => {
-            console.log(err)
+            error_handle(err);
         })
 }
 

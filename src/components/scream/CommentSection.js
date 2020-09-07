@@ -10,6 +10,8 @@ import { getScream } from '../../redux/actions/dataActions';
 import CommentBox from './CommentBox';
 import { InputAdornment, Avatar, Grid, Card, CardHeader, Paper } from '@material-ui/core';
 
+import axios from 'axios';
+import { error_handle } from '../../redux/actions/dataActions';
 
 const useStyles = makeStyles((theme) => ({
     ...theme.spreadThis,
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export class Comment extends Component {
+
     render() {
         const classes = this.props.classes
         return (
@@ -34,9 +37,9 @@ export class Comment extends Component {
                         <Avatar style={{ marginTop: '7px' }} className={classes.commentThumb} src={this.props.comment.imageUrl} />
                     </Grid>
                     <Grid item xs={10}>
-                        <Card fullWidth>
+                        <Card>
                             <CardContent style={{ padding: '3px' }}>
-                                <Typography style={{ marginBottom: '6px' }} variant='h6'>
+                                <Typography style={{ marginBottom: '6px', marginTop: '-7px' }} variant='h6'>
                                     {this.props.comment.handle}
                                 </Typography>
                                 <Typography>
@@ -57,19 +60,19 @@ const CommentSection = function (props) {
     const max_comments_shown = 5;
 
     const content = (props.expanded) ? (
-        <frameElement>
+        <Fragment>
             <hr />
             <div className={classes.comment}>
                 <Grid container spacing={3}>
                     {props.comments[props.screamId] && props.comments[props.screamId].map((comment, i) =>
-                        <Comment key={String(comment.createAt) + String(comment.handle)} comment={comment} classes={classes} />)}
+                        <Comment key={String(comment.createAt) + comment.handle} comment={comment} classes={classes} />)}
                     <Grid item xs={12}>
                         <CommentBox screamId={props.screamId} />
                     </Grid>
                 </Grid>
 
             </div>
-        </frameElement>
+        </Fragment>
     ) : (<div />);
 
     return (

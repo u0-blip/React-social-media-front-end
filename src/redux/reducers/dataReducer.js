@@ -47,6 +47,7 @@ export default function (state = initialState, action) {
                 screams: action.payload,
                 loading: false
             };
+
         case SET_SCREAM:
             //data markup
             //payload: ...screamdata

@@ -4,9 +4,11 @@ import {
     SET_UNAUTHENTICATED,
     LOADING_USER,
     TGGL_LIKE_SCREAM,
-    MARK_NOTIFICATIONS_READ,
+    MARK_NOTIFICATIONS_SEEN,
+    MARK_NOTIFICATIONS_OPEN,
     SUBMIT_COMMENT
 } from '../types';
+import { act } from 'react-dom/test-utils';
 
 
 const initialState = {
@@ -58,6 +60,22 @@ export default function (state = initialState, action) {
                     handle: action.payload.handle,
                     screamId: action.payload.screamId
                 })
+            }
+            return {
+                ...state
+            }
+        case MARK_NOTIFICATIONS_SEEN:
+            for (var notIndex in state.notifications) {
+                state.notifications[notIndex].seen = true;
+            }
+            return {
+                ...state
+            }
+        case MARK_NOTIFICATIONS_OPEN:
+            for (var notIndex in state.notifications) {
+                if (state.notifications[notIndex].notification_id === action.payload) {
+                    state.notifications[notIndex].opened = true;
+                }
             }
             return {
                 ...state
