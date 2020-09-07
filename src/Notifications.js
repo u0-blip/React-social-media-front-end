@@ -19,7 +19,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 const styles = (theme) => ({
     ...theme.spreadThis,
     not_verb_icon: {
-        marginRight: 10,
+        position: 'absolute',
+        marginTop: '-18px',
+        marginLeft: '32px',
         color: 'gray',
     }
 });
@@ -73,7 +75,7 @@ export class Notifications extends Component {
             notifications && notifications.length > 0 ? (
                 notifications.map((not) => {
                     const verb = not.type === 'like' ? 'liked' : 'commented on';
-                    const time = dayjs(not.createdAt).fromNow();
+                    const time = dayjs(not.createAt).fromNow();
                     const readColor = not.opened ? '#fff' : 'gainsboro';
 
                     const icon =
@@ -86,7 +88,10 @@ export class Notifications extends Component {
                     const notText = ' ' + verb + ' your scream ';
                     return (
                         <MenuItem key={not.createAt} button={false} style={{ background: readColor }}>
-                            {icon}
+                            <div>
+                                <Avatar className={classes.notThumb} src={not.imageUrl} />
+                                {icon}
+                            </div>
                             <Grid container direction='column'>
                                 <Grid item>
                                     <Typography

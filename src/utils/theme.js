@@ -55,5 +55,9 @@ theme.spreadThis.commentThumb = {
     width: theme.spacing(3),
     height: theme.spacing(3),
 }
-
+theme.spreadThis.notThumb = {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    marginRight: '23px'
+}
 export default theme;
