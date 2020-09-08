@@ -6,7 +6,8 @@ import {
     POST_SCREAM,
     SET_SCREAM,
     SUBMIT_COMMENT,
-    UNSET_SCREAM
+    UNSET_SCREAM,
+    SEARCH_RES
 } from '../types';
 
 const initialState = {
@@ -14,8 +15,11 @@ const initialState = {
     scream: [],
     loading: false,
     comments: {},
-    likes: {}
+    likes: {},
+    search_res: {},
+    searching: true
 };
+
 let index;
 function find(screamId, screams) {
     for (var s in screams) {
@@ -97,6 +101,18 @@ export default function (state = initialState, action) {
             return {
                 ...state
             }
+        case 'SEARCHING':
+            return {
+                ...state,
+                searching: true,
+            }
+        case 'SEARCH_RES':
+            return {
+                ...state,
+                searching: false,
+                search_res: action.payload,
+            }
+
         default:
             return state
     }

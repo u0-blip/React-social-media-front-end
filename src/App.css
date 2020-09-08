@@ -9,7 +9,8 @@ body {
   max-width: 1200px;
 }
 .nav-container {
-  margin: auto;
+  margin-left: 10px;
+  justify-content: space-between;
 }
 .nav-container svg {
   color: rgba(26, 25, 25, 0.699);

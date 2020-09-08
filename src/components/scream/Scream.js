@@ -30,10 +30,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MenuItem, Menu } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { deleteScream, handleLike, handleShare } from '../../redux/actions/dataActions';
+import { deleteScream, handleLike, handleShare, getScream } from '../../redux/actions/dataActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CommentSection from './CommentSection';
-import { getScream } from '../../redux/actions/dataActions';
 
 // export class ScreamDialog extends Component {
 //     render() {

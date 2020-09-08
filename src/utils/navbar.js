@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import { connect } from 'react-redux';
 import Notifications from './Notifications';
 import SearchBar from './searchBar';
+import HomeIcon from '@material-ui/icons/Home';
 
 export class Navbar extends Component {
   render() {
@@ -16,16 +17,12 @@ export class Navbar extends Component {
       <AppBar>
         <Toolbar className="nav-container">
           <Button color="inherit" component={Link} to="/">
-            Home
-            </Button>
-          <Button color="inherit" component={Link} to="/login">
-            Login
-            </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Signup
-            </Button>
+            <HomeIcon />
+          </Button>
           <SearchBar />
-          {this.props.authenticated && <Notifications />}
+          <div style={{ width: '30px' }}>
+            {this.props.authenticated && <Notifications />}
+          </div>
         </Toolbar>
       </AppBar>
     );

@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import { render } from '@testing-library/react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { search } from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
     root: {
@@ -39,7 +41,7 @@ export class SearchBar extends Component {
     constructor() {
         super();
         this.state = {
-            post: '',
+            query: '',
             errors: {}
         };
         this.handleChange = this.handleChange.bind(this);
@@ -57,15 +59,14 @@ export class SearchBar extends Component {
     }
 
     handleSubmit(event) {
-        // event.preventDefault();
-        // const postData = {
-        //     query: this.state.query,
-        // };
+        event.preventDefault();
+        const postData = {
+            query: this.state.query,
+        };
 
-        // // this.props.postComment(postData, this.props.screamId, this.props.user.credentials);
-        // this.setState({
-        //     query: ''
-        // });
+        this.props.search(postData, this.props.user.credentials);
+
+        this.props.history.push(`/search/${encodeURIComponent(this.state.query)}`)
     }
 
     render() {
@@ -78,13 +79,14 @@ export class SearchBar extends Component {
                 </IconButton>
                 <InputBase
                     className={classes.input}
+                    name='query'
                     placeholder="Search people, keywords..."
                     inputProps={{ 'aria-label': 'search' }}
-
                     value={this.state.query}
                     onChange={this.handleChange}
+                    onSubmit={this.handleSubmit}
                 />
-                <IconButton type="submit" className={classes.iconButton} aria-label="search" component={Link} to={`/search/${encodeURIComponent(this.state.query)}`}
+                <IconButton type="submit" className={classes.iconButton} aria-label="search"
                     disabled={loading}
                     onClick={this.handleSubmit}>
                     <SearchIcon />
@@ -99,7 +101,7 @@ SearchBar.propTypes = {
 };
 
 const mapActiontoProps = {
-
+    search: search
 }
 const mapStateToProps = (state) => ({
     UI: state.UI,
@@ -108,4 +110,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps, mapActiontoProps)(withStyles(styles)(SearchBar));
+export default connect(mapStateToProps, mapActiontoProps)(withStyles(styles)(withRouter(SearchBar)));

@@ -138,3 +138,17 @@ export const postComment = (comment, screamId, credentials) => (dispatch) => {
 export const handleShare = () => (dispatch) => {
 
 }
+
+
+export const search = (postData, credentials) => (dispatch) => {
+    dispatch({
+        type: 'SEARCHING'
+    })
+    axios.get(`/search/${postData.query}`)
+        .then((res) => {
+            dispatch({
+                type: 'SEARCH_RES',
+                payload: res.data
+            })
+        })
+}
