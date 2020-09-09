@@ -187,6 +187,7 @@ const Scream = function (props) {
 
 const _SearchScream = function (props) {
     const classes = useStyles();
+    classes.root = { marginLeft: '0px' };
     dayjs.extend(relativeTime)
 
     const [expanded, setExpanded] = React.useState(false);
@@ -271,7 +272,7 @@ const _SearchScream = function (props) {
         ) : (<div></div>)
 
     return (
-        <Grid item sm={6} xs={12} spacing={1} className={clsx(classes.root, classes.scream)}>
+        <Grid item sm={6} xs={12} style={{ marginLeft: '0px' }} className={clsx(classes.root, classes.scream)}>
             <Card style={{ marginLeft: '10px' }}>
                 <CardHeader
                     avatar={

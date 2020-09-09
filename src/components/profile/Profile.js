@@ -34,7 +34,7 @@ const styles = (theme) => ({
     }
 });
 
-class _PersonalProfile extends Component {
+class PersonalProfile extends Component {
     render() {
         const {
             classes,
@@ -151,7 +151,7 @@ export class Profile extends Component {
         let profile;
 
         if (authenticated) {
-            profile = <_PersonalProfile user={this.props.user.credentials} />
+            profile = <PersonalProfile user={this.props.user.credentials} classes={classes} />
         } else {
             profile =
                 <Fragment>
