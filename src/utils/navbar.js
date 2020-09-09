@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 
 import { connect } from 'react-redux';
 import Notifications from './Notifications';
-import SearchBar from './searchBar';
+import SearchBar from '../search/searchBar';
 import HomeIcon from '@material-ui/icons/Home';
 
 export class Navbar extends Component {

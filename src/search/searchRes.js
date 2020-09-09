@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import SearchSkeleton from './searchSkeleton';
 import { connect } from 'react-redux';
 import { Post, User } from './ResUtil';
-import Scream from '../components/scream/Scream';
-import { PersonalProfile } from '../components/profile/Profile';
+import { SearchScream } from '../components/scream/Scream';
+import { SearchPersonalProfile } from '../components/profile/Profile';
 
 const styles = (theme) => ({
 
@@ -18,17 +18,23 @@ export class SearchRes extends Component {
         if (!searching) {
             return (
                 // search res include, posts, users
-                <Grid container sm={9} xs={11} style={{ margin: 'auto' }} spacing={1} direction='column'>
-                    <Typography variant='h6'>
-                        Posts
+                <Grid container>
+                    <Grid item sm={10} xs={11} style={{ margin: 'auto' }}>
+                        <Grid container spacing={1} direction='column'>
+                            <Typography variant='h6'>
+                                Posts
                     </Typography>
-                    {search_res.posts.map((post) => <Scream scream={post} key={post.id} />)}
-                    <Typography variant='h6'>
-                        Users
+                            <Grid container>
+                                {search_res.posts.map((post) => <SearchScream scream={post} key={post.id} />)}
+                            </Grid>
+                            <Typography variant='h6'>
+                                Users
                     </Typography>
-                    <Card>
-                        {search_res.users.map((user) => <PersonalProfile user={user} key={user.userId} />)}
-                    </Card>
+                            <Grid container spacing={1} >
+                                {search_res.users.map((user) => <SearchPersonalProfile user={user} key={user.userId} />)}
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
             )
         } else {

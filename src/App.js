@@ -18,7 +18,7 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import User from "./pages/user";
-import SearchRes from './utils/searchRes';
+import SearchRes from './search/searchRes';
 
 axios.defaults.baseURL =
   // "https://us-central1-social-media-app-287512.cloudfunctions.net/api";

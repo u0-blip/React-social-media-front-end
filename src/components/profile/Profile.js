@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Typography, Tooltip, IconButton, Avatar } from '@material-ui/core';
+import { Typography, Tooltip, IconButton, Avatar, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
@@ -75,6 +75,40 @@ class _PersonalProfile extends Component {
                 </Typography>}
                 <EditProfile />
             </Fragment>
+        )
+    }
+}
+
+class _SearchPersonalProfile extends Component {
+    render() {
+        const {
+            classes,
+            user: { handle, createAt, imageUrl, bio, website, location },
+        } = this.props;
+
+        return (
+            <Grid item sm={3} xs={6} >
+                <Card style={{ marginLeft: '10px', height: '20rem' }}>
+                    <div className={classes.logo_image} >
+                        <div className={classes.polaroid}>
+                            <Avatar src={imageUrl} className={classes.logo_image} />
+                            {this.fileInput}
+                        </div>
+                    </div>
+                    <Typography variant='body1' className={classes.name_text}>
+                        {handle}
+                    </Typography>
+                    {location && <Typography variant='body1' className={classes.profile_text}>
+                        <LocationOn className={classes.profile_icon} /> {location}
+                    </Typography>}
+                    {website && <Typography variant='body1' className={classes.profile_text}>
+                        <WebIcon className={classes.profile_icon} /> <a href={website}> {website} </a>
+                    </Typography>}
+                    {bio && <Typography variant='body1' className={classes.profile_text}>
+                        <PersonIcon className={classes.profile_icon} /> {bio}
+                    </Typography>}
+                </Card>
+            </Grid>
         )
     }
 }
@@ -180,9 +214,10 @@ const mapStateToProps = (state) => ({
 const mapStateToPropsPersonalProfile = (state) => ({
 });
 
-const PersonalProfile = connect(mapStateToPropsPersonalProfile, mapActionToProps)(withStyles(styles)(_PersonalProfile));
+
+const SearchPersonalProfile = connect(mapStateToPropsPersonalProfile, mapActionToProps)(withStyles(styles)(_SearchPersonalProfile));
 
 export {
-    PersonalProfile
+    SearchPersonalProfile
 }
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Profile));
