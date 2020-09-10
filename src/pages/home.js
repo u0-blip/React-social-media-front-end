@@ -49,7 +49,7 @@ export class Home extends Component {
                     {recentScreamsMarkup}
                 </Grid>
                 <Grid item sm={4} xs={12} className='profile' >
-                    <Profile style={{ position: 'fixed', width: '31%' }} />
+                    <Profile style={{ position: 'fixed', width: '305px' }} />
                 </Grid>
             </Grid>
         )

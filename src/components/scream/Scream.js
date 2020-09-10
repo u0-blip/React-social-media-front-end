@@ -187,7 +187,6 @@ const Scream = function (props) {
 
 const _SearchScream = function (props) {
     const classes = useStyles();
-    classes.root = { marginLeft: '0px' };
     dayjs.extend(relativeTime)
 
     const [expanded, setExpanded] = React.useState(false);
@@ -341,5 +340,6 @@ const SearchScream = connect(mapStateToProps, mapActiontoProps)(_SearchScream)
 export default connect(mapStateToProps, mapActiontoProps)(Scream);
 
 export {
+    useStyles,
     SearchScream,
 }

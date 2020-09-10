@@ -12,7 +12,6 @@ import { render } from '@testing-library/react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { search } from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
     root: {
@@ -42,30 +41,31 @@ export class SearchBar extends Component {
         super();
         this.state = {
             query: '',
-            errors: {}
+            errors: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ errors: nextProps.UI.errors });
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     this.setState({ errors: nextProps.UI.errors });
+    // }
 
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
+        if (this.state.errors.length>0){
+            this.setState({errors:''})
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const postData = {
-            query: this.state.query,
-        };
-
-        this.props.search(postData, this.props.user.credentials);
-
+        if(this.state.query.length==0){
+            this.setState({errors: 'Search cannot be empty!'})
+            return
+        }
         this.props.history.push(`/search/${encodeURIComponent(this.state.query)}`)
     }
 
@@ -84,6 +84,8 @@ export class SearchBar extends Component {
                     inputProps={{ 'aria-label': 'search' }}
                     value={this.state.query}
                     onChange={this.handleChange}
+                    error={this.state.errors.length>0}
+                    helperText={this.state.errors}
                     onSubmit={this.handleSubmit}
                 />
                 <IconButton type="submit" className={classes.iconButton} aria-label="search"
@@ -101,7 +103,6 @@ SearchBar.propTypes = {
 };
 
 const mapActiontoProps = {
-    search: search
 }
 const mapStateToProps = (state) => ({
     UI: state.UI,

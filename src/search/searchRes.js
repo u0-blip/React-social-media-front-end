@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles, Card, Typography, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import SearchSkeleton from './searchSkeleton';
+import { SearchPostSkeleton,  SearchUserSkeleton} from './searchSkeleton';
 import { connect } from 'react-redux';
 import { Post, User } from './ResUtil';
 import { SearchScream } from '../components/scream/Scream';
@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import { search } from '../redux/actions/dataActions';
+
 
 
 const styles = (theme) => ({
@@ -30,6 +32,15 @@ export class SearchRes extends Component {
         post_expanded: false,
         user_expanded: false,
     }
+
+    componentWillMount(){
+        const postData = {
+            query: this.props.match.params.query,
+        };
+
+        this.props.search(postData, this.props.user.credentials);
+    }
+
     handlePostExpandClick = () => {
         this.setState({ post_expanded: !this.state.post_expanded });
     };
@@ -45,13 +56,15 @@ export class SearchRes extends Component {
 
         const { post_expanded, user_expanded } = this.state;
 
+        let post_expand;
+        let user_expand;
         if (!searching) {
             let total_len = search_res.posts.length;
-            let post_expand = (total_len > post_display_len &&
+             post_expand = (total_len > post_display_len &&
                 <Fragment>
-                    <Grid item sm={12} xs={12}>
-                        <div style={{ width: '100%' }}>
+                    <Grid item sm={12} xs={12} style={{display: 'flex', justifyContent: 'center'}}>
                             <IconButton
+                                style={{marginLeft: '9px'}}
                                 className={clsx(classes.expand, {
                                     [classes.expandOpen]: post_expanded,
                                 })}
@@ -60,9 +73,8 @@ export class SearchRes extends Component {
                                 aria-expanded={post_expanded}
                                 aria-label="show more"
                             >
-                                <ExpandMoreIcon />
+                                <ExpandMoreIcon style={{fontSize: '2.5rem'}}/>
                             </IconButton>
-                        </div>
                     </Grid>
                     <Collapse style={{ width: '100%' }}
                         in={post_expanded} timeout="auto" unmountOnExit>
@@ -74,11 +86,11 @@ export class SearchRes extends Component {
             )
 
             total_len = search_res.users.length;
-            let user_expand = (total_len > user_display_len &&
+             user_expand = (total_len > user_display_len &&
                 <Fragment>
-                    <Grid item sm={12} xs={12}>
-                        <div style={{ width: '100%' }}>
+                    <Grid item sm={12} xs={12} style={{display: 'flex', justifyContent: 'center'}}>
                             <IconButton
+                                style={{marginLeft: '9px'}}
                                 className={clsx(classes.expand, {
                                     [classes.expandOpen]: user_expanded,
                                 })}
@@ -87,9 +99,8 @@ export class SearchRes extends Component {
                                 aria-expanded={user_expanded}
                                 aria-label="show more"
                             >
-                                <ExpandMoreIcon />
+                                <ExpandMoreIcon  style={{fontSize: '2.5rem'}}/>
                             </IconButton>
-                        </div>
                     </Grid>
                     <Collapse style={{ width: '100%' }}
                         in={user_expanded} timeout="auto" unmountOnExit>
@@ -99,6 +110,7 @@ export class SearchRes extends Component {
                     </Collapse>
                 </Fragment>
             )
+        }
 
             return (
                 // search res include, posts, users
@@ -109,32 +121,37 @@ export class SearchRes extends Component {
                                 Posts
                             </Typography>
                             <Grid container>
-                                {search_res.posts.slice(0, post_display_len).map((post) => <SearchScream scream={post} key={post.id} />)}
-                                {post_expand}
+                                {searching? 
+                                    [...Array(post_display_len).keys()].map((i) => <SearchPostSkeleton key={i} />)  : (
+                                    search_res.posts.slice(0, post_display_len).map((post) => <SearchScream scream={post} key={post.id} />)
+                                )}
+                                {!searching && post_expand}
                             </Grid>
                             <Typography variant='h6'>
                                 Users
                             </Typography>
                             <Grid container spacing={1} >
-                                {search_res.users.slice(0, user_display_len).map((user) => <SearchPersonalProfile user={user} key={user.userId} />)}
-                                {user_expand}
+                                {searching? 
+                                    [...Array(user_display_len).keys()].map((i) => <SearchUserSkeleton key={i} />)  : (
+                                        search_res.users.slice(0, user_display_len).map((user) => <SearchPersonalProfile user={user} key={user.userId} />)
+                                )}
+                                {!searching && user_expand}
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             )
-        } else {
-            return <SearchSkeleton />
-        }
+        } 
     }
-}
 
 SearchRes.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
 const mapActiontoProps = {
+    search: search
 }
+
 const mapStateToProps = (state) => ({
     UI: state.UI,
     user: state.user,

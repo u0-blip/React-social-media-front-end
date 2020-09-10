@@ -92,7 +92,6 @@ class _SearchPersonalProfile extends Component {
                     <div className={classes.logo_image} >
                         <div className={classes.polaroid}>
                             <Avatar src={imageUrl} className={classes.logo_image} />
-                            {this.fileInput}
                         </div>
                     </div>
                     <Typography variant='body1' className={classes.name_text}>
@@ -190,7 +189,7 @@ export class Profile extends Component {
                 </Fragment>
         }
         return (
-            <Paper>
+            <Paper style={{ position: 'fixed', width: '31%' }}>
                 {profile}
             </Paper>
         )
