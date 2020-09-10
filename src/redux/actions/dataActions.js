@@ -152,3 +152,25 @@ export const search = (postData, credentials) => (dispatch) => {
             })
         })
 }
+
+export const clearErrors = () => (dispatch) => {
+    dispatch({ type: CLEAR_ERRORS });
+};
+
+export const getViewUser = (handle) => (dispatch) => {
+    dispatch({
+        type: 'LOADING'
+    })
+    axios
+        .get(`/user/${handle}`)
+        .then((res) => {
+            dispatch({
+                type: 'GETVIEWUSER',
+                payload: {
+                    user: res.data.user,
+                    screams: res.data.screams
+                }
+            })
+        })
+        .catch((err) => console.log(err));
+}

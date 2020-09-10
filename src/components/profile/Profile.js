@@ -34,50 +34,6 @@ const styles = (theme) => ({
     }
 });
 
-class PersonalProfile extends Component {
-    render() {
-        const {
-            classes,
-            user: { handle, createAt, imageUrl, bio, website, location },
-        } = this.props;
-
-        return (
-            <Fragment>
-                <div className={classes.logo_image} >
-                    <div className={classes.polaroid}>
-                        <Avatar src={imageUrl} className={classes.logo_image} />
-                        {this.fileInput}
-                        <EditProfileButton
-                            tip='Edit profile picture'
-                            onClick={this.handleEditPicture}
-                            btnClassName='button'
-                            style={{
-                                position: 'relative',
-                                marginTop: '-74%',
-                                left: '71%'
-                            }}
-                        >
-                            <EditIcon color='primary' />
-                        </EditProfileButton>
-                    </div>
-                </div>
-                <Typography variant='body1' className={classes.name_text}>
-                    {handle}
-                </Typography>
-                {location && <Typography variant='body1' className={classes.profile_text}>
-                    <LocationOn className={classes.profile_icon} /> {location}
-                </Typography>}
-                {website && <Typography variant='body1' className={classes.profile_text}>
-                    <WebIcon className={classes.profile_icon} /> <a href={website}> {website} </a>
-                </Typography>}
-                {bio && <Typography variant='body1' className={classes.profile_text}>
-                    <PersonIcon className={classes.profile_icon} /> {bio}
-                </Typography>}
-                <EditProfile />
-            </Fragment>
-        )
-    }
-}
 
 class _SearchPersonalProfile extends Component {
     render() {
@@ -112,6 +68,10 @@ class _SearchPersonalProfile extends Component {
     }
 }
 
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
 export class Profile extends Component {
     constructor() {
         super();
@@ -138,61 +98,103 @@ export class Profile extends Component {
     }
 
     render() {
-        const {
+        let {
             classes,
-            user: {
-                credentials: { handle, createAt, imageUrl, bio, website, location },
-                loading,
-                authenticated
-            }
+            user,
+            viewUser
         } = this.props;
+        let identity = true;
+        let same_person = false;
 
-        let profile;
+        if (!isEmpty(viewUser) && user.authenticated) {
+            // there are currently self to view
+            same_person = user.credentials.handle == viewUser.handle && user.authenticated;
+        } else if (isEmpty(viewUser) && user.authenticated) {
+            //viewing self
+            same_person = true;
+            viewUser = user.credentials
 
-        if (authenticated) {
-            profile = <PersonalProfile user={this.props.user.credentials} classes={classes} />
-        } else {
-            profile =
-                <Fragment>
-                    <div className={classes.logo_image} >
-                        <div className={classes.polaroid}>
-                            <img src={anon_img} className={classes.logo_image} />
-                        </div>
+        } else if (isEmpty(viewUser) && !user.authenticated) {
+            // no one to view, prompt to login
+            identity = false
+        }
+
+
+        if (!identity) {
+            return <Paper>
+                <div className={classes.logo_image} >
+                    <div className={classes.polaroid}>
+                        <img src={anon_img} className={classes.logo_image} />
                     </div>
+                </div>
 
-                    <Typography variant="body2" align="center">
-                        No profile found, please login again
-                    </Typography>
-                    <Grid item xs={12} className={classes.buttons}>
-                        <Grid container justify="center" spacing={3}>
-                            <Grid item>
-                                <Button
-                                    variant="contained"
-                                    component={Link}
-                                    to="/login"
-                                >
-                                    Login
-                        </Button>
-                            </Grid>
-                            <Grid item>
-                                <Button
-                                    variant="contained"
-                                    component={Link}
-                                    to="/signup"
-                                >
-                                    Signup
-                        </Button>
-                            </Grid>
+                <Typography variant="body2" align="center">
+                    No profile found, please login again
+                        </Typography>
+                <Grid item xs={12} className={classes.buttons}>
+                    <Grid container justify="center" spacing={3}>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                component={Link}
+                                to="/login"
+                            >
+                                Login
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                component={Link}
+                                to="/signup"
+                            >
+                                Signup
+                            </Button>
                         </Grid>
                     </Grid>
-
-                </Fragment>
-        }
-        return (
-            <Paper style={{ position: 'fixed', width: '31%' }}>
-                {profile}
+                </Grid>
             </Paper>
-        )
+        } else {
+            const {
+                imageUrl, handle, website, bio, location
+            } = viewUser
+
+            return (
+                <Paper style={{ position: 'fixed', width: '31%' }}>
+                    <div className={classes.logo_image} >
+                        <div className={classes.polaroid}>
+                            <Avatar src={imageUrl} className={classes.logo_image} />
+                            {same_person && this.fileInput}
+                            {same_person && <EditProfileButton
+                                tip='Edit profile picture'
+                                onClick={this.handleEditPicture}
+                                btnClassName='button'
+                                style={{
+                                    position: 'relative',
+                                    marginTop: '-74%',
+                                    left: '71%'
+                                }}
+                            >
+                                <EditIcon color='primary' />
+                            </EditProfileButton>}
+                        </div>
+                    </div>
+                    <Typography variant='body1' className={classes.name_text}>
+                        {handle}
+                    </Typography>
+                    {location && <Typography variant='body1' className={classes.profile_text}>
+                        <LocationOn className={classes.profile_icon} /> {location}
+                    </Typography>}
+                    {website && <Typography variant='body1' className={classes.profile_text}>
+                        <WebIcon className={classes.profile_icon} /> <a href={website}> {website} </a>
+                    </Typography>}
+                    {bio && <Typography variant='body1' className={classes.profile_text}>
+                        <PersonIcon className={classes.profile_icon} /> {bio}
+                    </Typography>}
+                    {same_person && <EditProfile />}
+                </Paper>
+            )
+        }
     }
 }
 
@@ -207,7 +209,8 @@ const mapActionToProps = {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    viewUser: state.data.viewUser
 });
 
 const mapStateToPropsPersonalProfile = (state) => ({
@@ -219,4 +222,5 @@ const SearchPersonalProfile = connect(mapStateToPropsPersonalProfile, mapActionT
 export {
     SearchPersonalProfile
 }
+
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Profile));

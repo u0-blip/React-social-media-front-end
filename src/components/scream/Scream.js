@@ -27,12 +27,15 @@ import ShareIcon from '@material-ui/icons/Share';
 import MessageIcon from '@material-ui/icons/Message';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { MenuItem, Menu, Grid } from '@material-ui/core';
+import { MenuItem, Menu, Grid, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { deleteScream, handleLike, handleShare, getScream } from '../../redux/actions/dataActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CommentSection from './CommentSection';
+import ScreamDialog from './ScreamDialog';
+import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
     ...theme.spreadThis,
@@ -45,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
+    scream: {
+        margin: `${theme.spacing(1)}px auto`,
+    }
+}));
+
+
+const useScreamActionStyle = makeStyles((theme) => ({
+    ...theme.spreadThis,
+
     expand: {
         color: 'grey',
         transform: 'scaleX(-1)',
@@ -56,28 +68,71 @@ const useStyles = makeStyles((theme) => ({
         transform: 'scaleX(1)',
         color: '#383434',
     },
-    scream: {
-        margin: `${theme.spacing(1)}px auto`,
-    }
-}));
+}))
+const _ScreamActions = function (props) {
+    const [expanded, setExpanded] = React.useState(false);
+
+    const classes = useScreamActionStyle();
+    const {
+        scream: {
+            body, screamId, likeCount, commentCount
+        },
+        user,
+        scream,
+        user: {
+            authenticated,
+            likes
+        }
+    } = props;
+
+    const handleExpandClick = () => {
+        // get the data from the server
+        props.getScream(screamId);
+        setExpanded(!expanded);
+    };
+
+    return <Fragment>
+        <CardActions disableSpacing>
+            <IconButton
+                aria-label="like"
+                onClick={() => {
+                    if (!authenticated) {
+                        return
+                    }
+                    props.handleLike(props.liked, screamId, props.user.handle)
+                }}>
+                <FavoriteIcon
+                    style={props.liked ? { color: red[500] } : {}}
+                /> {likeCount}
+            </IconButton>
+            <IconButton
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="comment">
+                <MessageIcon className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                })} /> {commentCount}
+            </IconButton>
+            <IconButton aria-label="share" onClick={() => props.handleShare()}>
+                <ShareIcon /> 0
+    </IconButton>
+        </CardActions>
+        <CommentSection expanded={expanded} screamId={screamId} />
+    </Fragment>
+
+}
 
 
 const Scream = function (props) {
     const classes = useStyles();
     dayjs.extend(relativeTime)
 
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-        // get the data from the server
-        props.getScream(props.screamId);
-        setExpanded(!expanded);
-    };
-
     const {
         scream: {
-            body, createAt, userImage, handle, screamId, likeCount, commentCount
+            createAt, userImage, handle, screamId,
         },
         user,
+        scream,
         user: {
             authenticated,
             likes
@@ -149,38 +204,37 @@ const Scream = function (props) {
 
     return (
         <Card className={clsx(classes.root, classes.scream)}>
-            <CardHeader
-                avatar={
-                    <Avatar alt={handle[0]} src={userImage} />
-                }
-                action={action}
-                title={handle}
-                subheader={dayjs(createAt).fromNow()}
-            />
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    {body}
-                </Typography>
+            <Grid container>
+                <Grid item xs={6} sm={6}>
+                    <CardHeader
+                        avatar={
+                            <Avatar alt={handle[0]} src={userImage} />
+                        }
+
+                        component={Link}
+                        to={`/users/${handle}`}
+                        title={handle}
+                        subheader={dayjs(createAt).fromNow()}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                    <Grid container justify="flex-end" direction='row'>
+                        {action}
+                    </Grid>
+                </Grid>
+            </Grid>
+            <CardContent
+                component={Link}
+                to={`/users/${handle}/scream/${screamId}`}>
+                <ScreamDialog
+                    screamId={screamId}
+                    userHandle={handle}
+                    openDialog={props.openDialog}
+                    scream={scream}
+                />
             </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="like" onClick={() => props.handleLike(props.liked, screamId, props.user.handle)}>
-                    <FavoriteIcon
-                        style={props.liked ? { color: red[500] } : {}}
-                    /> {likeCount}
-                </IconButton>
-                <IconButton
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="comment">
-                    <MessageIcon className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })} /> {commentCount}
-                </IconButton>
-                <IconButton aria-label="share" onClick={() => props.handleShare()}>
-                    <ShareIcon /> 0
-                </IconButton>
-            </CardActions>
-            <CommentSection expanded={expanded} screamId={props.screamId} />
+            <ScreamActions scream={scream} liked={props.liked} />
+
         </Card>
     );
 }
@@ -273,7 +327,10 @@ const _SearchScream = function (props) {
     return (
         <Grid item sm={6} xs={12} style={{ marginLeft: '0px' }} className={clsx(classes.root, classes.scream)}>
             <Card style={{ marginLeft: '10px' }}>
+
                 <CardHeader
+                    component={Link}
+                    to={`/users/${handle}`}
                     avatar={
                         <Avatar alt={handle[0]} src={userImage} />
                     }
@@ -281,6 +338,7 @@ const _SearchScream = function (props) {
                     title={handle}
                     subheader={dayjs(createAt).fromNow()}
                 />
+
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {body}
@@ -310,6 +368,11 @@ const _SearchScream = function (props) {
                 </CardActions>
                 <CommentSection expanded={expanded} screamId={props.screamId} />
 
+                {props.openDialog && <ScreamDialog
+                    screamId={screamId}
+                    userHandle={handle}
+                    openDialog={props.openDialog}
+                />}
             </Card>
         </Grid>
 
@@ -336,10 +399,12 @@ const mapStateToProps = (state) => ({
 });
 
 const SearchScream = connect(mapStateToProps, mapActiontoProps)(_SearchScream)
+const ScreamActions = connect(mapStateToProps, mapActiontoProps)(_ScreamActions);
 
 export default connect(mapStateToProps, mapActiontoProps)(Scream);
 
 export {
     useStyles,
     SearchScream,
+    ScreamActions
 }

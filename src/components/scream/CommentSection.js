@@ -65,7 +65,7 @@ const CommentSection = function (props) {
             <div className={classes.comment}>
                 <Grid container spacing={3}>
                     {props.comments[props.screamId] && props.comments[props.screamId].map((comment, i) =>
-                        <Comment key={String(comment.createAt) + comment.handle} comment={comment} classes={classes} />)}
+                        <Comment key={comment.id} comment={comment} classes={classes} />)}
                     <Grid item xs={12}>
                         <CommentBox screamId={props.screamId} />
                     </Grid>

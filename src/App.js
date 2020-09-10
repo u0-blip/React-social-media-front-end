@@ -17,8 +17,13 @@ import Navbar from "./utils/navbar";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import AuthoRoute from './utils/AuthRoute';
+
+
 import User from "./pages/user";
 import SearchRes from './search/searchRes';
+import GamesHome from './games/gamesHome';
+import Games from './games/games';
 
 axios.defaults.baseURL =
   // "https://us-central1-social-media-app-287512.cloudfunctions.net/api";
@@ -33,8 +38,8 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
+              <AuthoRoute exact path="/login" component={Login} />
+              <AuthoRoute exact path="/signup" component={Signup} />
               <Route exact path="/users/:handle" component={User} />
               <Route
                 exact
@@ -42,6 +47,9 @@ function App() {
                 component={User}
               />
               <Route path="/search/:query" component={SearchRes} />
+              <Route path="/games" component={GamesHome} />
+              <Route path="/games/:game" component={Games} />
+              
             </Switch>
           </div>
         </Router>

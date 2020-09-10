@@ -17,7 +17,9 @@ const initialState = {
     comments: {},
     likes: {},
     search_res: {},
-    searching: true
+    searching: true,
+    viewUser: {},
+    viewScreams: []
 };
 
 let index;
@@ -112,7 +114,13 @@ export default function (state = initialState, action) {
                 searching: false,
                 search_res: action.payload,
             }
-
+        case 'GETVIEWUSER':
+            return {
+                ...state,
+                loading: false,
+                viewUser: action.payload.user,
+                viewScreams: action.payload.screams
+            }
         default:
             return state
     }

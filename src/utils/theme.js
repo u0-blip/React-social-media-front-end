@@ -45,7 +45,10 @@ const themeObject = {
         profile_text: {
             margin: '10px 10px 10px 10px'
         },
-
+        profileClass: {
+            position: 'fixed',
+            width: '305px'
+        }
     }
 };
 

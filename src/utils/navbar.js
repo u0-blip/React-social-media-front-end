@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import Notifications from './Notifications';
 import SearchBar from '../search/searchBar';
 import HomeIcon from '@material-ui/icons/Home';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import IconButton from '@material-ui/core/IconButton';
 
 export class Navbar extends Component {
   render() {
@@ -20,9 +22,32 @@ export class Navbar extends Component {
             <HomeIcon />
           </Button>
           <SearchBar />
-          <div style={{ width: '30px' }}>
-            {this.props.authenticated && <Notifications />}
+
+          <div width='30px'>
+            <Notifications />
+            <IconButton
+              aria-label="games"
+              component={Link}
+              to="/games"
+            >
+              <SportsEsportsIcon />
+            </IconButton>
+            <Button
+              variant="contained"
+              component={Link}
+              to="/login"
+            >
+              Login
+                        </Button>
+            <Button
+              variant="contained"
+              component={Link}
+              to="/signup"
+            >
+              Signup
+                        </Button>
           </div>
+
         </Toolbar>
       </AppBar>
     );

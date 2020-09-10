@@ -9,6 +9,12 @@ import { getScreams } from '../redux/actions/dataActions';
 import { getUserData } from '../redux/actions/userActions';
 import axios from 'axios';
 import Postbox from '../components/scream/postBox';
+import { withStyles } from '@material-ui/core';
+
+
+const styles = (theme) => ({
+    ...theme.spreadThis,
+});
 
 export class Home extends Component {
     componentDidMount() {
@@ -49,7 +55,7 @@ export class Home extends Component {
                     {recentScreamsMarkup}
                 </Grid>
                 <Grid item sm={4} xs={12} className='profile' >
-                    <Profile style={{ position: 'fixed', width: '305px' }} />
+                    <Profile className={this.props.classes.profileClass} />
                 </Grid>
             </Grid>
         )
@@ -73,4 +79,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Home)
+)(withStyles(styles)(Home));

@@ -12,6 +12,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import { Link } from 'react-router-dom';
 import { markNotificationsSeen, markNotificationsOpen } from '../redux/actions/userActions';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
 
 
 const styles = (theme) => ({
@@ -35,7 +36,11 @@ export class Notifications extends Component {
     }
 
     handleClick(event) {
+        if (!this.props.user.authenticated) {
+            this.props.history.push('/login');
+        }
         this.setState({ anchorEl: event.currentTarget });
+
     }
     handleClose() {
         this.setState({ anchorEl: null });
@@ -48,6 +53,7 @@ export class Notifications extends Component {
     };
 
     render() {
+
         const notifications = this.props.notifications;
         const ITEM_HEIGHT = 70;
         const classes = this.props.classes;
@@ -95,10 +101,9 @@ export class Notifications extends Component {
                                     <Typography
                                         component={Link}
                                         onClick={() => { this.props.markNotificationsOpen([not.notification_id]) }}
-                                        style={{ color: 'black' }}
                                         variant="body1"
                                         to={`/users/${not.recipient}/scream/${not.screamId}`}
-                                        style={{ width: '270px' }}
+                                        style={{ width: '270px', color: 'black' }}
                                     >
                                         <strong> {not.sender}</strong>
                                         {notText}
@@ -164,4 +169,4 @@ const mapStateToProps = (state) => ({
     notifications: state.user.notifications,
 });
 
-export default connect(mapStateToProps, mapActiontoProps)(withStyles(styles)(Notifications));
+export default connect(mapStateToProps, mapActiontoProps)(withStyles(styles)(withRouter(Notifications)));
