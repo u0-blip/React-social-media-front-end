@@ -8,10 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import { getScream } from '../../redux/actions/dataActions';
 import CommentBox from './CommentBox';
-import { InputAdornment, Avatar, Grid, Card, CardHeader, Paper } from '@material-ui/core';
+import { Avatar, Grid, Card } from '@material-ui/core';
 
-import axios from 'axios';
-import { error_handle } from '../../redux/actions/dataActions';
 
 const useStyles = makeStyles((theme) => ({
     ...theme.spreadThis,

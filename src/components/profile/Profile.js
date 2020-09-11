@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react'
-import { Typography, Tooltip, IconButton, Avatar, Card } from '@material-ui/core';
+import React, { Component } from 'react'
+import { Typography, Avatar, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';

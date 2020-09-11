@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 export class ScreamSkeleton extends Component {
     render() {
         return (
             <div>
-                
+
             </div>
         )
     }

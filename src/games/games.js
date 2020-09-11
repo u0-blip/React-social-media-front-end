@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Card, Typography, Grid } from '@material-ui/core';
+import { withStyles, Typography, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { SearchPostSkeleton,  SearchUserSkeleton} from '../search/searchSkeleton';
+import { SearchPostSkeleton, SearchUserSkeleton } from '../search/searchSkeleton';
 import { connect } from 'react-redux';
-import { Post, User } from '../search/ResUtil';
 import { SearchScream } from '../components/scream/Scream';
 import { SearchPersonalProfile } from '../components/profile/Profile';
 import clsx from 'clsx';
@@ -34,7 +33,7 @@ export class Games extends Component {
         user_expanded: false,
     }
 
-    componentWillMount(){
+    componentWillMount() {
         const postData = {
             query: this.props.match.params.query,
         };
@@ -49,9 +48,9 @@ export class Games extends Component {
         this.setState({ user_expanded: !this.state.user_expanded });
     };
     render() {
-        if (!this.props.user.authenticated){
+        if (!this.props.user.authenticated) {
             console.log('fuck')
-            return <Redirect to='/login'/>
+            return <Redirect to='/login' />
         }
 
         let { searching, search_res, classes } = this.props;
@@ -66,21 +65,21 @@ export class Games extends Component {
         let user_expand;
         if (!searching) {
             let total_len = search_res.posts.length;
-             post_expand = (total_len > post_display_len &&
+            post_expand = (total_len > post_display_len &&
                 <Fragment>
-                    <Grid item sm={12} xs={12} style={{display: 'flex', justifyContent: 'center'}}>
-                            <IconButton
-                                style={{marginLeft: '9px'}}
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: post_expanded,
-                                })}
-                                // hidden={!post_expanded}
-                                onClick={this.handlePostExpandClick}
-                                aria-expanded={post_expanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon style={{fontSize: '2.5rem'}}/>
-                            </IconButton>
+                    <Grid item sm={12} xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                        <IconButton
+                            style={{ marginLeft: '9px' }}
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: post_expanded,
+                            })}
+                            // hidden={!post_expanded}
+                            onClick={this.handlePostExpandClick}
+                            aria-expanded={post_expanded}
+                            aria-label="show more"
+                        >
+                            <ExpandMoreIcon style={{ fontSize: '2.5rem' }} />
+                        </IconButton>
                     </Grid>
                     <Collapse style={{ width: '100%' }}
                         in={post_expanded} timeout="auto" unmountOnExit>
@@ -92,21 +91,21 @@ export class Games extends Component {
             )
 
             total_len = search_res.users.length;
-             user_expand = (total_len > user_display_len &&
+            user_expand = (total_len > user_display_len &&
                 <Fragment>
-                    <Grid item sm={12} xs={12} style={{display: 'flex', justifyContent: 'center'}}>
-                            <IconButton
-                                style={{marginLeft: '9px'}}
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: user_expanded,
-                                })}
-                                // hidden={!user_expanded}
-                                onClick={this.handleUserExpandClick}
-                                aria-expanded={user_expanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon  style={{fontSize: '2.5rem'}}/>
-                            </IconButton>
+                    <Grid item sm={12} xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                        <IconButton
+                            style={{ marginLeft: '9px' }}
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: user_expanded,
+                            })}
+                            // hidden={!user_expanded}
+                            onClick={this.handleUserExpandClick}
+                            aria-expanded={user_expanded}
+                            aria-label="show more"
+                        >
+                            <ExpandMoreIcon style={{ fontSize: '2.5rem' }} />
+                        </IconButton>
                     </Grid>
                     <Collapse style={{ width: '100%' }}
                         in={user_expanded} timeout="auto" unmountOnExit>
@@ -118,37 +117,37 @@ export class Games extends Component {
             )
         }
 
-            return (
-                // search res include, posts, users
-                <Grid container>
-                    <Grid item sm={10} xs={11} style={{ margin: 'auto' }}>
-                        <Grid container spacing={1} direction='column'>
-                            <Typography variant='h6'>
-                                Posts
+        return (
+            // search res include, posts, users
+            <Grid container>
+                <Grid item sm={10} xs={11} style={{ margin: 'auto' }}>
+                    <Grid container spacing={1} direction='column'>
+                        <Typography variant='h6'>
+                            Posts
                             </Typography>
-                            <Grid container>
-                                {searching? 
-                                    [...Array(post_display_len).keys()].map((i) => <SearchPostSkeleton key={i} />)  : (
+                        <Grid container>
+                            {searching ?
+                                [...Array(post_display_len).keys()].map((i) => <SearchPostSkeleton key={i} />) : (
                                     search_res.posts.slice(0, post_display_len).map((post) => <SearchScream scream={post} key={post.id} />)
                                 )}
-                                {!searching && post_expand}
-                            </Grid>
-                            <Typography variant='h6'>
-                                Users
+                            {!searching && post_expand}
+                        </Grid>
+                        <Typography variant='h6'>
+                            Users
                             </Typography>
-                            <Grid container spacing={1} >
-                                {searching? 
-                                    [...Array(user_display_len).keys()].map((i) => <SearchUserSkeleton key={i} />)  : (
-                                        search_res.users.slice(0, user_display_len).map((user) => <SearchPersonalProfile user={user} key={user.userId} />)
+                        <Grid container spacing={1} >
+                            {searching ?
+                                [...Array(user_display_len).keys()].map((i) => <SearchUserSkeleton key={i} />) : (
+                                    search_res.users.slice(0, user_display_len).map((user) => <SearchPersonalProfile user={user} key={user.userId} />)
                                 )}
-                                {!searching && user_expand}
-                            </Grid>
+                            {!searching && user_expand}
                         </Grid>
                     </Grid>
                 </Grid>
-            )
-        } 
+            </Grid>
+        )
     }
+}
 
 Games.propTypes = {
     user: PropTypes.object.isRequired,
