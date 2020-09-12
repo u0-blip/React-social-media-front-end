@@ -1,68 +1,115 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Redux setup:
 
-## Available Scripts
+Global access to the states.
+Move all the UI and login states into the Reduc global variables.
 
-In the project directory, you can run:
+# Sign up component:
 
-### `npm start`
+# Create user profile
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Backend
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+👽 not started
+🚸 not tested
+✅ success
+❌ failed
 
-### `npm test`
+Functionalities:
+screams
+Create user✅
+Get screams ✅
+Post screams ✅
+Like screams ✅
+Unlike screams✅
+Comment screams✅
+Delete comments✅
+Users
+Signup user✅
+Login user✅
+User edit profile
+User edit profile photo
+Delete user
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The Asynchronous request is important concept.
 
-### `npm run build`
+The backend functions are similar to the Flask backends.
+It gets a HTTP body that it will try to decode.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Database structure:
+Documents:
+User, scream, comment, notification.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create a nav bar✅
+Create a component that shows the posts. ✅
 
-### `npm run eject`
+Create signup and login frontend.
+Signup
+The user register through backend.
+The authentication token is saved in axios.
+UI state change is based on redux state change.
+Testings:
+Wrong email✅
+Not matched password✅
+Existing email/ handle.✅
+Going to the new location using history✅
+Create a profile section that displays user information.
+Display user information such as profile picture, name✅
+Automatic login using firebase token✅
+Allow client to upload profile image. ✅
+Profile displaying relevant information.✅
+Add logout capability.✅
+Allow client to choose display other people’s profile.
+Allow user to make posts
+Make posts ✅
+Delete posts ✅
+Interaction with other users
+Like a post✅
+Clicking on the comment allow both expand and input✅
+Comment on a post✅
+Notifications
+Firstly, I observed that the notification is similar in logics to the drop down action on the psotss, so I copy the crop down action from post and substitute the menau items to the appropriate notifications.
+Things to do next:
+Move expand more button down, ✅when clicked second time, take user to the dedicated section search page. 👽
+Add skeleton to the waiting page ✅
+Make popup scream
+Make chat function
+Add settings to user
+Ability to share screams
+Make user profile show when hovered over
+Add games section.
+Make search result relevant and highlighted.
+Add chat functionality
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Redux tutorial
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The difference between middleware and enhancer is that middleware is for actions while enhancer is for reducers.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+create css that styles the image.
+Profile image
+Link to user
+Create typography
+Profile image
+Link to user
+Create typography
+Location, website icon, joined at
+add upload button for the user profile
+Hide the actual file upload button and use a favicon to call the function.
+Add a tooltip to the upload button to explain it.
+Add logout button
+Add edit details button
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Navbar indicate user
+text field
+Implement like and unlike buttons for the screams.
+Add delete button to delete the screams.
+Post scream component.
+Focus on the scream
+Display user profile
+Allow user to like and comment on the dialog
+Show comments on the post
+Allow users to add comments to the post.
+Build a user handle
+Implement the user page
+Set the notification when the user page is loaded.
