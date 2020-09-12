@@ -9,7 +9,7 @@ const logout = () => (dispatch) => {
 
 
 export const error_handle = (err) => (dispatch) => {
-    if (err.code && err.code == 'auth/id-token-expired') {
+    if (err.code && err.code === 'auth/id-token-expired') {
         dispatch(logout)
     } else {
         console.log(err);

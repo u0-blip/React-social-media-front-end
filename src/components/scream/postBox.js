@@ -55,9 +55,6 @@ export class PostBox extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ errors: nextProps.UI.errors });
-    }
 
     handleChange(event) {
         this.setState({
@@ -91,7 +88,10 @@ export class PostBox extends Component {
         } = this.props;
 
         const loading = UI.loading;
-        const error_state = this.state.errors != null && this.state.errors.post
+        const errors = UI.errors;
+        const error_state = errors != null && errors.post
+
+
         if (authenticated) {
             return (
                 <Card className={classes.root}>
@@ -104,7 +104,7 @@ export class PostBox extends Component {
                             rows={4}
                             multiline
                             value={this.state.post}
-                            helperText={error_state ? this.state.errors.post : ''}
+                            helperText={error_state ? errors.post : ''}
                             error={error_state ? true : false}
                             onChange={this.handleChange}
                         />

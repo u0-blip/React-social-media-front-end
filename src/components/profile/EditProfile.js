@@ -61,9 +61,7 @@ class _EditProfile extends Component {
     render() {
         const {
             user: {
-                credentials: { handle, createAt, imageUrl, bio, website, location },
-                loading,
-                authenticated
+                credentials: { bio, website, location },
             }
         } = this.props;
 

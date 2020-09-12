@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
-import { Link } from "react-router-dom";
-import { render } from '@testing-library/react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
@@ -55,15 +51,15 @@ export class SearchBar extends Component {
         this.setState({
             [event.target.name]: event.target.value
         })
-        if (this.state.errors.length>0){
-            this.setState({errors:''})
+        if (this.state.errors.length > 0) {
+            this.setState({ errors: '' })
         }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        if(this.state.query.length==0){
-            this.setState({errors: 'Search cannot be empty!'})
+        if (this.state.query.length === 0) {
+            this.setState({ errors: 'Search cannot be empty!' })
             return
         }
         this.props.history.push(`/search/${encodeURIComponent(this.state.query)}`)
@@ -84,8 +80,7 @@ export class SearchBar extends Component {
                     inputProps={{ 'aria-label': 'search' }}
                     value={this.state.query}
                     onChange={this.handleChange}
-                    error={this.state.errors.length>0}
-                    helperText={this.state.errors}
+                    error={this.state.errors.length > 0}
                     onSubmit={this.handleSubmit}
                 />
                 <IconButton type="submit" className={classes.iconButton} aria-label="search"

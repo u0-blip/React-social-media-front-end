@@ -62,7 +62,7 @@ export class Login extends Component {
                 <Grid item sm={6}>
                     <div className={classes.logo_image} >
                         <div className={classes.polaroid}>
-                            <img src={AppIcon} className={classes.logo_image} />
+                            <img alt='loginicon' src={AppIcon} className={classes.logo_image} />
 
                         </div>
                     </div>

@@ -5,7 +5,6 @@ import {
     SET_SCREAM,
     SUBMIT_COMMENT,
     UNSET_SCREAM,
-    SEARCH_RES
 } from '../types';
 
 const initialState = {
@@ -23,7 +22,7 @@ const initialState = {
 let index;
 function find(screamId, screams) {
     for (var s in screams) {
-        if (screamId == screams[s].screamId) {
+        if (screamId === screams[s].screamId) {
             return s;
         }
     }
@@ -68,7 +67,7 @@ export default function (state = initialState, action) {
 
         case UNSET_SCREAM:
             for (var i in state.screams) {
-                if (state.screams[i].screamId == action.payload) {
+                if (state.screams[i].screamId === action.payload) {
                     state.screams.splice(i, 1);
                 }
             }
@@ -81,7 +80,7 @@ export default function (state = initialState, action) {
 
             index = find(screamId, state.screams);
             add_data(state.comments, screamId, action.payload)
-            if (index != -1) {
+            if (index !== -1) {
                 state.screams[index].commentCount += 1;
             }
 
@@ -91,7 +90,7 @@ export default function (state = initialState, action) {
 
         case TGGL_LIKE_SCREAM:
             index = find(action.payload.screamId, state.screams);
-            if (index != -1) {
+            if (index !== -1) {
                 if (action.payload.liked) {
                     state.screams[index].likeCount -= 1;
                 } else {

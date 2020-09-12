@@ -26,7 +26,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import MessageIcon from '@material-ui/icons/Message';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { MenuItem, Menu, Grid, Button } from '@material-ui/core';
+import { MenuItem, Menu, Grid } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteScream, handleLike, handleShare, getScream } from '../../redux/actions/dataActions';
 import CommentSection from './CommentSection';
@@ -72,13 +72,10 @@ const _ScreamActions = function (props) {
     const classes = useScreamActionStyle();
     const {
         scream: {
-            body, screamId, likeCount, commentCount
+            screamId, likeCount, commentCount
         },
-        user,
-        scream,
         user: {
             authenticated,
-            likes
         }
     } = props;
 
@@ -132,7 +129,6 @@ const Scream = function (props) {
         scream,
         user: {
             authenticated,
-            likes
         }
     } = props;
 
@@ -177,7 +173,7 @@ const Scream = function (props) {
                         },
                     }}
                 >
-                    {user.credentials.handle == handle &&
+                    {user.credentials.handle === handle &&
                         [
                             <MenuItem onClick={handleClose} key='delete'>
                                 <Typography >Delete</Typography>
@@ -189,7 +185,7 @@ const Scream = function (props) {
                             </MenuItem>
                         ]
                     }
-                    {user.credentials.handle != handle &&
+                    {user.credentials.handle !== handle &&
                         [<MenuItem onClick={handleClose} key='Hide'>
                             <Typography>Hide</Typography>
                             <VisibilityOffIcon aria-label="Hide" />
@@ -254,7 +250,6 @@ const _SearchScream = function (props) {
         user,
         user: {
             authenticated,
-            likes
         }
     } = props;
 
@@ -299,7 +294,7 @@ const _SearchScream = function (props) {
                         },
                     }}
                 >
-                    {user.credentials.handle == handle &&
+                    {user.credentials.handle === handle &&
                         [
                             <MenuItem onClick={handleClose} key='delete'>
                                 <Typography >Delete</Typography>
@@ -311,7 +306,7 @@ const _SearchScream = function (props) {
                             </MenuItem>
                         ]
                     }
-                    {user.credentials.handle != handle &&
+                    {user.credentials.handle !== handle &&
                         [<MenuItem onClick={handleClose} key='Hide'>
                             <Typography>Hide</Typography>
                             <VisibilityOffIcon aria-label="Hide" />

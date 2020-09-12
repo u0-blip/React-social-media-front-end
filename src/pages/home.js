@@ -29,11 +29,11 @@ export class Home extends Component {
         const { screams, loading } = this.props.data;
         let liked_id = []
         let liked_arr = []
-        for (var i in this.props.likes) {
+        for (let i in this.props.likes) {
             liked_id.push(this.props.likes[i].screamId)
         }
 
-        for (var i in screams) {
+        for (let i in screams) {
             if (liked_id.includes(screams[i].screamId)) {
                 liked_arr.push(true);
             } else {

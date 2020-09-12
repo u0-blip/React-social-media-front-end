@@ -6,9 +6,7 @@ import {
     TGGL_LIKE_SCREAM,
     MARK_NOTIFICATIONS_SEEN,
     MARK_NOTIFICATIONS_OPEN,
-    SUBMIT_COMMENT
 } from '../types';
-import { act } from 'react-dom/test-utils';
 
 
 const initialState = {
@@ -65,14 +63,14 @@ export default function (state = initialState, action) {
                 ...state
             }
         case MARK_NOTIFICATIONS_SEEN:
-            for (var notIndex in state.notifications) {
+            for (let notIndex in state.notifications) {
                 state.notifications[notIndex].seen = true;
             }
             return {
                 ...state
             }
         case MARK_NOTIFICATIONS_OPEN:
-            for (var notIndex in state.notifications) {
+            for (let notIndex in state.notifications) {
                 if (state.notifications[notIndex].notification_id === action.payload) {
                     state.notifications[notIndex].opened = true;
                 }

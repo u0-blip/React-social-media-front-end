@@ -39,7 +39,7 @@ class _SearchPersonalProfile extends Component {
     render() {
         const {
             classes,
-            user: { handle, createAt, imageUrl, bio, website, location },
+            user: { handle, imageUrl, bio, website, location },
         } = this.props;
 
         return (
@@ -108,7 +108,7 @@ export class Profile extends Component {
 
         if (!isEmpty(viewUser) && user.authenticated) {
             // there are currently self to view
-            same_person = user.credentials.handle == viewUser.handle && user.authenticated;
+            same_person = user.credentials.handle === viewUser.handle && user.authenticated;
         } else if (isEmpty(viewUser) && user.authenticated) {
             //viewing self
             same_person = true;
@@ -124,7 +124,7 @@ export class Profile extends Component {
             return <Paper>
                 <div className={classes.logo_image} >
                     <div className={classes.polaroid}>
-                        <img src={anon_img} className={classes.logo_image} />
+                        <img src={anon_img} alt='profile' className={classes.logo_image} />
                     </div>
                 </div>
 

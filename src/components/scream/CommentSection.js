@@ -62,7 +62,7 @@ const CommentSection = function (props) {
             <hr />
             <div className={classes.comment}>
                 <Grid container spacing={3}>
-                    {props.comments[props.screamId] && props.comments[props.screamId].map((comment, i) =>
+                    {props.comments[props.screamId] && props.comments[props.screamId].slice(0, max_comments_shown).map((comment, i) =>
                         <Comment key={comment.id} comment={comment} classes={classes} />)}
                     <Grid item xs={12}>
                         <CommentBox screamId={props.screamId} />
