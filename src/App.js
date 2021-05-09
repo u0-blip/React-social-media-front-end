@@ -26,7 +26,7 @@ import GamesHome from './games/gamesHome';
 import Games from './games/games';
 
 axios.defaults.baseURL =
-  "https://us-central1-social-media-app-287512.cloudfunctions.net/api";
+  "https://australia-southeast1-social-media-e38fc.cloudfunctions.net/api";
 // 'http://localhost:5000/social-media-app-287512/us-central1/api/'
 
 function App() {
